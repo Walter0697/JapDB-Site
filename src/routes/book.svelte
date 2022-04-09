@@ -104,7 +104,7 @@
                                         <div
                                             class="chapterButton"
                                             use:Ripple={{ surface: true }}
-                                            on:click={() => { goto(`/quiz/${chapter.identifier}-${chapter.version}`); }}
+                                            on:click={() => { goto(`/quiz/select/${chapter.identifier}-${chapter.version}`); }}
                                         >
                                             <Sentence
                                                 sentence={`${chapter.chapterNumber}) ${chapter.chapterTitle}`}

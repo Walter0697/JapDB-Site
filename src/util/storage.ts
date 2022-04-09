@@ -1,4 +1,7 @@
+import type { QuizQuestion, QuizType, QuizItem } from '../type/quiz';
+
 const VOCAB_BANK: string = "VOCAB_BANK";
+const CURRENT_QUIZ: string = "CURRENT_QUIZ";
 
 type VocabBankItem = {
     identifier: string;
@@ -73,4 +76,24 @@ export const getVocabBank = (identifier: string): string => {
         }
     }
     return "";
+}
+
+export const setCurrentQuiz = (vocabIdentifier: string, question: QuizQuestion, quizType: QuizType) => {
+    const item: QuizItem = {
+        vocabIdentifier: vocabIdentifier,
+        quizSpecificQuestion: question,
+        quizType: quizType,
+    }
+    const strResult: string = JSON.stringify(item);
+    setItem(CURRENT_QUIZ, strResult);
+}
+
+export const getCurrentQuizInfo = (): QuizItem => {
+    const item = getItem(CURRENT_QUIZ);
+    if (item) {
+        let result: QuizItem;
+        result = JSON.parse(item);
+        return result;
+    }
+    return null;
 }

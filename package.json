@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@material/elevation": "^13.0.0",
+    "@material/typography": "^13.0.0",
     "@playwright/test": "^1.20.0",
     "@smui-extra/accordion": "^6.0.0-beta.15",
     "@smui/card": "^6.0.0-beta.15",

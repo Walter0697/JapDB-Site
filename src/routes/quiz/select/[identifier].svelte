@@ -1,0 +1,108 @@
+<script lang="ts">
+    import LayoutGrid, { Cell } from '@smui/layout-grid';
+	import LinearProgress from '@smui/linear-progress';
+    import Card, { 
+        Media,
+        MediaContent, 
+    } from '@smui/card';
+    import Ripple from '@smui/ripple';
+    import { isVocabBankExist, setVocabBank, setCurrentQuiz } from './../../../util/storage';
+    import { onMount } from 'svelte';
+    import { page } from '$app/stores';
+    import { QuizQuestion, QuizType } from '../../../type/quiz';
+    import { goto } from '$app/navigation';
+ 
+    let identifier: string = "";
+    let version: string = "";
+    let fetching: boolean = true;
+    
+    onMount(async () => {
+        const identifierInfo: string = $page.params.identifier;
+        const bookInfo: string[] = identifierInfo.split('-');
+        identifier = bookInfo[0];
+        version = bookInfo[1];
+
+        if (!isVocabBankExist(identifier, version)) {
+            fetch(import.meta.env.VITE_BACKEND_URL + "/vocabs?identifier=" + identifier)
+            .then(response => response.json())
+            .then(data => {
+                const item = JSON.stringify(data.result);
+                setVocabBank(identifier, version, item);
+                fetching = false;
+            });
+        } else {
+            fetching = false;
+        }
+    })
+
+    function setQuizInformation(quizType: QuizType) {
+        // TODO: change it to get from database for quiz question
+        setCurrentQuiz(identifier, QuizQuestion.RespectForm, quizType);
+        goto("/quiz/question");
+    }
+
+</script>
+
+<LayoutGrid>
+    {#if fetching}
+        <Cell span={12}>
+            <LinearProgress indeterminate />
+        </Cell>
+    {:else}
+        <Cell span={6}>
+            <Card variant="outlined">
+                <Media class="" aspectRatio="16x9">
+                    <MediaContent>
+                    <div
+                        style="color: #fff; position: absolute; bottom: 16px; left: 16px;"
+                    >
+                        <small>Flash card let you decide if you are correct, so it allows more different kinds of quiz to test your knowledge</small>
+                    </div>
+                    </MediaContent>
+                </Media>
+                <div 
+                    class="cardcontent" 
+                    use:Ripple={{ surface: true }}
+                    on:click={() => { setQuizInformation(QuizType.FlashCard); }}    
+                >
+                    <div class="cardtitle">Flash Card</div>
+                </div>
+            </Card>
+        </Cell>
+        <Cell span={6}>
+            <Card variant="outlined">
+                <Media class="" aspectRatio="16x9">
+                    <MediaContent>
+                      <div
+                        style="color: #fff; position: absolute; bottom: 16px; left: 16px;"
+                      >
+                        <small>Quiz allows us to see if your answer is correct, so it prevents the chance for you to cheat</small>
+                      </div>
+                    </MediaContent>
+                </Media>
+                <div 
+                    class="cardcontent" 
+                    use:Ripple={{ surface: true }}
+                    on:click={() => { setQuizInformation(QuizType.Question); }}
+                >
+                    <div class="cardtitle">Quiz</div>
+                </div>
+            </Card>
+        </Cell>
+    {/if}
+</LayoutGrid>
+
+<style>
+    .cardtitle {
+        font-size: 30px;
+    }
+    .cardcontent {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        cursor: pointer;
+    }
+</style>

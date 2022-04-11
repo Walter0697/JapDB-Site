@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { Pronounciation, PronounciationList } from '../type/pronounciation';
-    import Sentence from '$lib/japanese/Sentence.svelte';
+	import type { Pronounciation, PronounciationList } from '@type/pronounciation';
+    import Sentence from '@lib/japanese/Sentence.svelte';
 
     
     let p: Pronounciation = {

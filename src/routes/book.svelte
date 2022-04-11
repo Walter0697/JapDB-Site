@@ -6,25 +6,10 @@
     import LinearProgress from '@smui/linear-progress';
     import Accordion, { Panel, Header, Content } from '@smui-extra/accordion';
 
-    import type { Pronounciation, PronounciationList } from '../type/pronounciation';
-    import Sentence from '$lib/japanese/Sentence.svelte';
-
-    // output 
-    interface BookCollection {
-        localName: string;
-        englishName: string;
-        chineseName: string;
-        japaneseName: string;
-        allChapters: BookChapter[];
-    };
-
-    interface BookChapter {
-        identifier: string;
-        version: string;
-        chapterNumber: string;
-        chapterTitle: string;
-        pronounciation: PronounciationList;
-    }
+    import type { Pronounciation, PronounciationList } from '@type/pronounciation';
+    import type { BookChapter, BookCollection } from '@type/book';
+    import { setBookList } from '@util/storage';
+    import Sentence from '@lib/japanese/Sentence.svelte'
 
     let fetching: boolean = true;
     let collections: BookCollection[] = [];
@@ -71,12 +56,15 @@
                         version: element.version,
                         chapterNumber: element.chapter.number,
                         chapterTitle: element.chapter.title,
+                        grammar: element.grammar,
                         pronounciation: pronounceList,
                     }
                     bookInfo.allChapters.push(chapter);
                 });
                 collections.push(bookInfo);
             }
+            // add collection to local storage, we don't want to cache it first but should still get some references
+            setBookList(collections);
             fetching = false;
         }).catch(error => {
             console.log(error);

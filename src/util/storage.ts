@@ -1,7 +1,9 @@
-import type { QuizQuestion, QuizType, QuizItem } from '../type/quiz';
+import type { QuizQuestion, QuizType, QuizItem } from '@type/quiz';
+import type { BookCollection } from '@type/book';
 
 const VOCAB_BANK: string = "VOCAB_BANK";
 const CURRENT_QUIZ: string = "CURRENT_QUIZ";
+const BOOK_LIST: string = "BOOK_LIST";
 
 type VocabBankItem = {
     identifier: string;
@@ -94,6 +96,21 @@ export const getCurrentQuizInfo = (): QuizItem => {
         let result: QuizItem;
         result = JSON.parse(item);
         return result;
+    }
+    return null;
+}
+
+export const setBookList = (data: BookCollection) => {
+    const strResult: string = JSON.stringify(data);
+    setItem(BOOK_LIST, strResult);
+}
+
+export const getBookList = (): BookCollection => {
+    const item = getItem(BOOK_LIST);
+    if (item) {
+        let output: BookCollection = null;
+        output = JSON.parse(item);
+        return output;
     }
     return null;
 }

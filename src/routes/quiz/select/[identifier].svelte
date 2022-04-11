@@ -6,10 +6,10 @@
         MediaContent, 
     } from '@smui/card';
     import Ripple from '@smui/ripple';
-    import { isVocabBankExist, setVocabBank, setCurrentQuiz } from './../../../util/storage';
+    import { isVocabBankExist, setVocabBank, setCurrentQuiz } from '@util/storage';
     import { onMount } from 'svelte';
     import { page } from '$app/stores';
-    import { QuizQuestion, QuizType } from '../../../type/quiz';
+    import { QuizQuestion, QuizType } from '@type/quiz';
     import { goto } from '$app/navigation';
  
     let identifier: string = "";

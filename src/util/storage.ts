@@ -1,4 +1,5 @@
-import type { QuizQuestion, QuizType, QuizItem } from '@type/quiz';
+import type { QuizType, QuizItem } from '@type/quiz';
+import type { VocabItem } from '@type/question';
 import type { BookCollection } from '@type/book';
 
 const VOCAB_BANK: string = "VOCAB_BANK";
@@ -8,7 +9,7 @@ const BOOK_LIST: string = "BOOK_LIST";
 type VocabBankItem = {
     identifier: string;
     version: string;
-    content: string;
+    content: VocabItem[];
 }
 
 export const getItem = (key: string): string => {
@@ -40,7 +41,7 @@ export const isVocabBankExist = (identifier: string, version: string): boolean =
     return false;
 }
 
-export const setVocabBank = (identifier: string, version: string, content: string) => {
+export const setVocabBank = (identifier: string, version: string, content: VocabItem[]) => {
     const item = getItem(VOCAB_BANK);
     let result: VocabBankItem[];
     let input: VocabBankItem = {
@@ -67,7 +68,7 @@ export const setVocabBank = (identifier: string, version: string, content: strin
     setItem(VOCAB_BANK, strResult);
 }
 
-export const getVocabBank = (identifier: string): string => {
+export const getVocabBank = (identifier: string): VocabItem[] => {
     const item = getItem(VOCAB_BANK);
     if (item) {
         let result: VocabBankItem[];
@@ -77,10 +78,10 @@ export const getVocabBank = (identifier: string): string => {
             return output.content;
         }
     }
-    return "";
+    return null;
 }
 
-export const setCurrentQuiz = (vocabIdentifier: string, question: QuizQuestion, quizType: QuizType) => {
+export const setCurrentQuiz = (vocabIdentifier: string, question: string, quizType: QuizType) => {
     const item: QuizItem = {
         vocabIdentifier: vocabIdentifier,
         quizSpecificQuestion: question,

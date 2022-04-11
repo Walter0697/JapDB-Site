@@ -10,6 +10,8 @@
     import { onMount } from 'svelte';
     import { page } from '$app/stores';
     import { QuizType } from '@type/quiz';
+    import type { VocabType, VocabItem } from '@type/question';
+    import type { Pronounciation, PronounciationList } from '@type/pronounciation';
     import { goto } from '$app/navigation';
     import { grammarType } from '@util/constant';
     import { t } from '@lib/translations';
@@ -28,8 +30,36 @@
             fetch(import.meta.env.VITE_BACKEND_URL + "/vocabs?identifier=" + identifier)
             .then(response => response.json())
             .then(data => {
-                const item = JSON.stringify(data.result);
-                setVocabBank(identifier, version, item);
+                //const item = JSON.stringify(data.result);
+                let vocabs: VocabItem[] = [];
+
+                data.result.forEach(v => {
+                    let list: Pronounciation[] = [];
+                    v.pronounce.forEach(p => {
+                        const pItem: Pronounciation = {
+                            word: p.word,
+                            hiragana: p.hiragana,
+                        }
+                        list.push(pItem);
+                    });
+                    let pronounciation: PronounciationList = {
+                        list: list,
+                    };
+                    const vocabData: VocabType = {
+                        type: v.type,
+                        section: v.section,
+                    };
+                    const result: VocabItem = {
+                        identifier: v.identifier,
+                        pronounce: pronounciation,
+                        meaning: v.meaning,
+                        data: vocabData,
+                    };
+
+                    vocabs.push(result);
+                });
+                // todo: setting vocab list as a list of vocab
+                setVocabBank(identifier, version, vocabs);
                 fetching = false;
             });
         } else {

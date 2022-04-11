@@ -1,7 +1,17 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    //import { getCurrentQuizInfo } from "src/util/storage";  
+    import { getCurrentQuizInfo, getVocabBank } from "@util/storage";  
+    import { getRandomQuestion } from '@util/question';
 
+    onMount(async () => {
+        const item = getCurrentQuizInfo();
+        const bookIdentifier = item.vocabIdentifier;
+        const vocabs = getVocabBank(bookIdentifier);
+        const question = getRandomQuestion(item, vocabs);
+        console.log(question);
+
+    });
+    
     // TODO
     // question type:
     // change form from verb

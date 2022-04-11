@@ -11,6 +11,7 @@
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   import logo from './sprite/svelte-logo.svg';
+  import { t, locale } from '@lib/translations';
 
   let open = false;
 
@@ -24,37 +25,44 @@
     <Drawer variant="dismissible" bind:open>
       <Header>
         <Title>JapDB</Title>
-        <Subtitle>A study app for Japanese</Subtitle>
+        <Subtitle>{$t('sidemenu.description')}</Subtitle>
       </Header>
       <Content>
         <List>
           <Item
             href="javascript:void(0)"
             on:click={() => setActive('home')}
-            activated={$page.url.pathname === 'Home'}
+            activated={$page.url.pathname === '/home'}
           >
-            <Text>Home</Text>
+            <Text>{$t('sidemenu.home')}</Text>
           </Item>
           <Item
             href="javascript:void(0)"
             on:click={() => setActive('dictionary')}
-            activated={$page.url.pathname === 'Dictionary'}
+            activated={$page.url.pathname === '/dictionary'}
           >
-            <Text>Dictionary</Text>
+            <Text>{$t('sidemenu.dictionary')}</Text>
           </Item>
           <Item
             href="javascript:void(0)"
             on:click={() => setActive('book')}
-            activated={$page.url.pathname === 'Quiz'}
+            activated={$page.url.pathname === '/book'}
           >
-            <Text>Quiz</Text>
+            <Text>{$t('sidemenu.quiz')}</Text>
           </Item>
           <Item
             href="javascript:void(0)"
             on:click={() => setActive('grammar')}
-            activated={$page.url.pathname === 'Grammar'}
+            activated={$page.url.pathname === '/grammar'}
           >
-            <Text>Grammar</Text>
+            <Text>{$t('sidemenu.grammar')}</Text>
+          </Item>
+          <Item
+            href="javascript:void(0)"
+            on:click={() => locale.get() === 'en' ? locale.set('zh') : locale.set('en')}
+            activated={false}
+          >
+            <Text>{$t('sidemenu.lang')}</Text>
           </Item>
         </List>
       </Content>

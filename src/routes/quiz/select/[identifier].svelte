@@ -9,8 +9,9 @@
     import { isVocabBankExist, setVocabBank, setCurrentQuiz } from '@util/storage';
     import { onMount } from 'svelte';
     import { page } from '$app/stores';
-    import { QuizQuestion, QuizType } from '@type/quiz';
+    import { QuizType } from '@type/quiz';
     import { goto } from '$app/navigation';
+    import { grammarType } from '@util/constant';
  
     let identifier: string = "";
     let version: string = "";
@@ -37,7 +38,7 @@
 
     function setQuizInformation(quizType: QuizType) {
         // TODO: change it to get from database for quiz question
-        setCurrentQuiz(identifier, QuizQuestion.RespectForm, quizType);
+        setCurrentQuiz(identifier, grammarType.respectForm, quizType);
         goto("/quiz/question");
     }
 

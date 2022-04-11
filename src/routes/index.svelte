@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { Pronounciation, PronounciationList } from '@type/pronounciation';
     import Sentence from '@lib/japanese/Sentence.svelte';
+    import { t } from '@lib/translations';
 
-    
     let p: Pronounciation = {
         word: "測試",
         hiragana: "先生",

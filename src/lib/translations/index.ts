@@ -10,13 +10,13 @@ export const config = {
   loaders: [
     {
       locale: 'en',
-      key: 'home',
-      loader: async () => (await import('./en/home.json')).default,
+      key: 'quiz',
+      loader: async () => (await import('./en/quiz.json')).default,
     },
     {
       locale: 'zh',
-      key: 'home',
-      loader: async () => (await import('./zh/home.json')).default,
+      key: 'quiz',
+      loader: async () => (await import('./zh/quiz.json')).default,
     },
     {
       locale: 'en',

@@ -12,6 +12,7 @@
     import { QuizType } from '@type/quiz';
     import { goto } from '$app/navigation';
     import { grammarType } from '@util/constant';
+    import { t } from '@lib/translations';
  
     let identifier: string = "";
     let version: string = "";
@@ -57,7 +58,7 @@
                     <div
                         style="color: #fff; position: absolute; bottom: 16px; left: 16px;"
                     >
-                        <small>Flash card let you decide if you are correct, so it allows more different kinds of quiz to test your knowledge</small>
+                        <small>{$t('quiz.flashcarddesc')}</small>
                     </div>
                     </MediaContent>
                 </Media>
@@ -77,7 +78,7 @@
                       <div
                         style="color: #fff; position: absolute; bottom: 16px; left: 16px;"
                       >
-                        <small>Quiz allows us to see if your answer is correct, so it prevents the chance for you to cheat</small>
+                      <small>{$t('quiz.quizdesc')}</small>
                       </div>
                     </MediaContent>
                 </Media>

@@ -30,7 +30,6 @@
             fetch(import.meta.env.VITE_BACKEND_URL + "/vocabs?identifier=" + identifier)
             .then(response => response.json())
             .then(data => {
-                //const item = JSON.stringify(data.result);
                 let vocabs: VocabItem[] = [];
 
                 data.result.forEach(v => {
@@ -50,6 +49,7 @@
                         section: v.section,
                     };
                     const result: VocabItem = {
+                        word: v.word,
                         identifier: v.identifier,
                         pronounce: pronounciation,
                         meaning: v.meaning,

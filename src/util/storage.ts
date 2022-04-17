@@ -101,7 +101,7 @@ export const getCurrentQuizInfo = (): QuizItem => {
     return null;
 }
 
-export const setBookList = (data: BookCollection) => {
+export const setBookList = (data: BookCollection[]) => {
     const strResult: string = JSON.stringify(data);
     setItem(BOOK_LIST, strResult);
 }

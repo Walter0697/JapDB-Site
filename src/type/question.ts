@@ -10,6 +10,7 @@ export type Question = {
     question_type: QuestionType;
     answer_choice: string[];
     correct_answer: string[];
+    correct_index: number;
 }
 
 export type VocabType = {
@@ -18,6 +19,7 @@ export type VocabType = {
 }
 
 export type VocabItem = {
+    word: string;
     identifier: string;
     pronounce: PronounciationList;
     meaning: string;

@@ -5,8 +5,13 @@ export enum QuestionType {
     Question = "Question",
 }
 
+export type QuestionSentenceInfo = {
+    question_identifier: string;
+    word: string;
+}
+
 export type Question = {
-    question: string;
+    question: QuestionSentenceInfo;
     question_type: QuestionType;
     answer_choice: string[];
     correct_answer: string[];

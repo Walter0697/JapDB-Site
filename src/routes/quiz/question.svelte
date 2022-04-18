@@ -1,7 +1,10 @@
 <script lang="ts">
+	import { grammarType, verbType } from '@util/constant';
     import { onMount } from 'svelte';
-    import { getCurrentQuizInfo, getVocabBank } from "@util/storage";  
+    import { getCurrentQuizInfo, getVocabBank } from '@util/storage';  
     import { getRandomQuestion } from '@util/question';
+    import { detectVerbType, convertVerb } from '@util/grammar';
+    import { toHiragana } from "@koozaki/romaji-conv";
 
     onMount(async () => {
         const item = getCurrentQuizInfo();
@@ -9,7 +12,6 @@
         const vocabs = getVocabBank(bookIdentifier);
         const question = getRandomQuestion(item, vocabs);
         console.log(question);
-
     });
     
     // TODO

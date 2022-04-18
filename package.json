@@ -46,6 +46,7 @@
   "type": "module",
   "dependencies": {
     "@fontsource/fira-mono": "^4.5.0",
+    "@koozaki/romaji-conv": "^2.0.17",
     "@lukeed/uuid": "^2.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@smui/button": "^6.0.0-beta.15",

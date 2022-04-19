@@ -8,6 +8,7 @@ export enum QuestionType {
 export type QuestionSentenceInfo = {
     question_identifier: string[];
     word: string;
+    pronounce: PronounciationList;
 }
 
 export type Question = {

@@ -22,8 +22,9 @@ export const getMultipleChoiceQuestion = (vocabs: VocabItem[]): Question => {
     let correct_index: number = getRandom(4);
 
     let questionInfo: QuestionSentenceInfo = {
-        question_identifier: "what is the meaning of ",
+        question_identifier: ["quiz.wordtomeaning", "{}"],
         word: multipleChoiceList[correct_index].word,
+        pronounce: multipleChoiceList[correct_index].pronounce,
     }
 
     let output: Question = {

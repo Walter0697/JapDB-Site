@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { PronounciationList } from './../type/pronounciation';
-    import { toStyles } from '../../util/utils';
-    import Japanese from './Japanese.svelte';
+	import type { PronounciationList } from '@type/pronounciation';
+    import { toStyles } from '@util/utils';
+    import Japanese from '@lib/japanese/Japanese.svelte';
 
     export let sentence: string = "";
     export let pronounce: PronounciationList = null;

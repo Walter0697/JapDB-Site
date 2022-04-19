@@ -6,7 +6,7 @@ export enum QuestionType {
 }
 
 export type QuestionSentenceInfo = {
-    question_identifier: string;
+    question_identifier: string[];
     word: string;
 }
 
@@ -21,6 +21,7 @@ export type Question = {
 export type VocabType = {
     type: string;   // verb, noun or adjective
     section: string;    // if verb or adjective, which section
+    form: string;   // if it is humble, or dictionary
 }
 
 export type VocabItem = {

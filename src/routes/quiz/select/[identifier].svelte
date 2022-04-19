@@ -6,14 +6,14 @@
         MediaContent, 
     } from '@smui/card';
     import Ripple from '@smui/ripple';
-    import { isVocabBankExist, setVocabBank, setCurrentQuiz } from '@util/storage';
+    import { isVocabBankExist, setVocabBank, setCurrentQuiz, getBookChapterByIdentifier } from '@util/storage';
     import { onMount } from 'svelte';
     import { page } from '$app/stores';
     import { QuizType } from '@type/quiz';
+    import type { BookChapter } from '@type/book';
     import type { VocabType, VocabItem } from '@type/question';
     import type { Pronounciation, PronounciationList } from '@type/pronounciation';
     import { goto } from '$app/navigation';
-    import { grammarType } from '@util/constant';
     import { t } from '@lib/translations';
  
     let identifier: string = "";
@@ -45,8 +45,9 @@
                         list: list,
                     };
                     const vocabData: VocabType = {
-                        type: v.type,
-                        section: v.section,
+                        type: v.data.type,
+                        section: v.data.section,
+                        form: v.data.form,
                     };
                     const result: VocabItem = {
                         word: v.word,
@@ -68,8 +69,8 @@
     })
 
     function setQuizInformation(quizType: QuizType) {
-        // TODO: change it to get from database for quiz question
-        setCurrentQuiz(identifier, grammarType.respectForm, quizType);
+        const bookChapter: BookChapter = getBookChapterByIdentifier(identifier);
+        setCurrentQuiz(identifier, bookChapter.grammar, quizType);
         goto("/quiz/question");
     }
 

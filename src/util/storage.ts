@@ -1,6 +1,6 @@
 import type { QuizType, QuizItem } from '@type/quiz';
 import type { VocabItem } from '@type/question';
-import type { BookCollection } from '@type/book';
+import type { BookCollection, BookChapter } from '@type/book';
 
 const VOCAB_BANK: string = "VOCAB_BANK";
 const CURRENT_QUIZ: string = "CURRENT_QUIZ";
@@ -106,12 +106,29 @@ export const setBookList = (data: BookCollection[]) => {
     setItem(BOOK_LIST, strResult);
 }
 
-export const getBookList = (): BookCollection => {
+export const getBookList = (): BookCollection[] => {
     const item = getItem(BOOK_LIST);
     if (item) {
-        let output: BookCollection = null;
+        let output: BookCollection[] = null;
         output = JSON.parse(item);
         return output;
+    }
+    return null;
+}
+
+export const getBookChapterByIdentifier = (identifier: string): BookChapter => {
+    const item = getItem(BOOK_LIST);
+    if (item) {
+        let collection: BookCollection[] = null;
+        collection = JSON.parse(item);
+        if (collection) {
+            for (let i = 0; i < collection.length; i++) {
+                const bookChapter: BookChapter = collection[i].allChapters.find(s => s.identifier === identifier);
+                if (bookChapter) {
+                    return bookChapter;
+                }
+            }
+        }
     }
     return null;
 }

@@ -55,12 +55,16 @@
                         pronounce: pronounciation,
                         meaning: v.meaning,
                         data: vocabData,
+                        book: {
+                            identifier: identifier,
+                            version: version
+                        }
                     };
 
                     vocabs.push(result);
                 });
                 // todo: setting vocab list as a list of vocab
-                setVocabBank(identifier, version, vocabs);
+                setVocabBank(vocabs);
                 fetching = false;
             });
         } else {

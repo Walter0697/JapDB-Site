@@ -6,12 +6,6 @@ const VOCAB_BANK: string = "VOCAB_BANK";
 const CURRENT_QUIZ: string = "CURRENT_QUIZ";
 const BOOK_LIST: string = "BOOK_LIST";
 
-type VocabBankItem = {
-    identifier: string;
-    version: string;
-    content: VocabItem[];
-}
-
 export const getItem = (key: string): string => {
     const item = localStorage.getItem(key);
     if (item) {
@@ -24,58 +18,48 @@ export const setItem = (key: string, value: string) => {
     localStorage.setItem(key, value);
 }
 
-export const isVocabBankExist = (identifier: string, version: string): boolean => {
+export const isVocabBankExist = (bookIdentifier: string, version: string): boolean => {
     const item = getItem(VOCAB_BANK);
     if (item) {
-        let output: VocabBankItem[];
-        output = JSON.parse(item);
-        if (output) {
-            const vocab = output.find(s => s.identifier === identifier);
-            if (vocab) {
-                if (vocab.version === version) {
-                    return true;
-                }
+        let result: VocabItem[];
+        if (result) {
+            const exist = result.find(s => s.book.identifier === bookIdentifier && s.book.version === version);
+            if (exist) {
+                return true;
             }
         }
     }
+
     return false;
 }
 
-export const setVocabBank = (identifier: string, version: string, content: VocabItem[]) => {
+export const setVocabBank = (content: VocabItem[]) => {
     const item = getItem(VOCAB_BANK);
-    let result: VocabBankItem[];
-    let input: VocabBankItem = {
-        identifier: identifier,
-        version: version,
-        content: content,
-    }
+    let result: VocabItem[];
 
     if (item) {
         result = JSON.parse(item);
-        if (result) {
-            // if there is a same identifier, remove it first
-            result = result.filter(s => s.identifier !== identifier);
-        } else {
-            result = [];
+        for (let i = 0; i < content.length; i++) {
+            const vocab = content[i];
+            result = result.filter(s => !(s.identifier === vocab.identifier && s.book.identifier === vocab.book.identifier));
+            result.push(content[i]);
         }
     } else {
-        result = [];
+        result = content;
     }
-
-    result.push(input);
 
     const strResult: string = JSON.stringify(result);
     setItem(VOCAB_BANK, strResult);
 }
 
-export const getVocabBank = (identifier: string): VocabItem[] => {
+export const getVocabBank = (bookIdentifier: string): VocabItem[] => {
     const item = getItem(VOCAB_BANK);
     if (item) {
-        let result: VocabBankItem[];
+        let result: VocabItem[];
         result = JSON.parse(item);
         if (result) {
-            let output = result.find(s => s.identifier === identifier);
-            return output.content;
+            let output = result.filter(s => s.book.identifier === bookIdentifier);
+            return output;
         }
     }
     return null;

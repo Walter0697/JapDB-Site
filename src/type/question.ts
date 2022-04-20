@@ -25,10 +25,16 @@ export type VocabType = {
     form: string;   // if it is humble, or dictionary
 }
 
+export type BookInformation = {
+    identifier: string;
+    version: string;
+}
+
 export type VocabItem = {
     word: string;
     identifier: string;
     pronounce: PronounciationList;
     meaning: string;
     data: VocabType;
+    book: BookInformation;
 }

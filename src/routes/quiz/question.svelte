@@ -6,7 +6,6 @@
     import { getCurrentQuizInfo, getVocabBank } from '@util/storage';  
     import { getRandomQuestion } from '@util/question';
     import { detectVerbType, convertVerb } from '@util/grammar';
-    import { toHiragana } from "@koozaki/romaji-conv";
     import { t } from '@lib/translations';
 
     function questionToString(info: QuestionSentenceInfo, translation: any): string {
@@ -23,14 +22,15 @@
         return output;
     }
 
-    let question_sentence: Question = null;
-    $: question_display = questionToString(question_sentence?.question, $t);
+    let question_info: Question = null;
+    $: question_display = questionToString(question_info?.question, $t);
 
     onMount(async () => {
         const item = getCurrentQuizInfo();
         const bookIdentifier = item.vocabIdentifier;
         const vocabs = getVocabBank(bookIdentifier);
-        question_sentence = getRandomQuestion(item, vocabs);
+        question_info = getRandomQuestion(item, vocabs);
+        console.log(question_info);
     });
     
     // TODO
@@ -50,6 +50,6 @@
 <div>
     <Sentence
         sentence={question_display}
-        pronounce={question_sentence?.question?.pronounce}
+        pronounce={question_info?.question?.pronounce}
     />
 </div>

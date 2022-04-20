@@ -46,7 +46,6 @@
   "type": "module",
   "dependencies": {
     "@fontsource/fira-mono": "^4.5.0",
-    "@koozaki/romaji-conv": "^2.0.17",
     "@lukeed/uuid": "^2.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@smui/button": "^6.0.0-beta.15",
@@ -55,6 +54,7 @@
     "@smui/list": "^6.0.0-beta.15",
     "cookie": "^0.4.1",
     "dotenv": "^16.0.0",
+    "hiragana-romaji-katakana": "^0.2.0",
     "svelte-material-ui": "^6.0.0-beta.15",
     "sveltekit-i18n": "^2.1.4"
   }

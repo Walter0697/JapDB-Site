@@ -1,4 +1,8 @@
 export const grammarType = {
+    conjuntiveForm: "conjuntiveForm",
+    negativeForm: "negativeForm",
+    perfectiveForm: "perfectiveForm",
+    teForm: "teForm",
     politeForm: "politeForm",
     imperativeForm: "imperativeForm",
     prohibitedForm: "prohibitedForm",
@@ -10,8 +14,8 @@ export const grammarType = {
 }
 
 export const verbType = {
-    ruVerb: "ruVerb",
-    uVerb: "uVerb",
-    suruVerb: "suruVerb",
+    ruVerb: "ru",
+    uVerb: "u",
+    suruVerb: "suru",
     irregular: "irregular",
 }

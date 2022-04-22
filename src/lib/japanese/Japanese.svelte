@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { toStyles } from '../../util/utils'
+    import { toStyles } from '@util/utils'
 
     export let word: string = "";
     export let pronounce: string = "";

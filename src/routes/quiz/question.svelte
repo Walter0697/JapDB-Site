@@ -1,8 +1,15 @@
 <script lang="ts">
-    import type { Question, VocabItem, QuestionSentenceInfo } from '@type/question';
-    import Sentence from '@lib/japanese/Sentence.svelte';
-	import { grammarType, verbType } from '@util/constant';
     import { onMount } from 'svelte';
+    import LayoutGrid, { Cell } from '@smui/layout-grid';
+    import Paper, { Title } from '@smui/paper';
+    import Ripple from '@smui/ripple';
+
+    import MultipleChoiceItem from '@lib/question/item/MultipleChoiceItem.svelte';
+    import Sentence from '@lib/japanese/Sentence.svelte';
+
+    import type { AnswerStatus } from '@type/answer';
+    import type { Question, VocabItem, QuestionSentenceInfo } from '@type/question';
+	import { grammarType, verbType } from '@util/constant';
     import { getCurrentQuizInfo, getVocabBank } from '@util/storage';  
     import { getRandomQuestion } from '@util/question';
     import { detectVerbType, convertVerb } from '@util/grammar';
@@ -22,17 +29,51 @@
         return output;
     }
 
-    let question_info: Question = null;
-    $: question_display = questionToString(question_info?.question, $t);
-
-    onMount(async () => {
+    function getNewQuestion() {
+        answer_status = {
+            user_selected: -1,
+            correct_answer: -1,
+            status: "none",
+        }
         const item = getCurrentQuizInfo();
         const bookIdentifier = item.vocabIdentifier;
         const vocabs = getVocabBank(bookIdentifier);
         question_info = getRandomQuestion(item, vocabs);
-        console.log(question_info);
+    }
+
+    function multipleChoicePickAnswer(selected_index: number) {
+        const correct_index: number = question_info.correct_index;
+        const correct_answer: string = question_info.answer_choice[correct_index];
+        const selected_answer: string = question_info.answer_choice[selected_index];
+        if (correct_answer === selected_answer) {
+            answer_status = {
+                user_selected: selected_index,
+                correct_answer: correct_index,
+                status: "correct",
+            }
+        } else {
+            answer_status = {
+                user_selected: selected_index,
+                correct_answer: correct_index,
+                status: "incorrect",
+            }
+        }
+        //getNewQuestion();
+    }
+
+    onMount(async () => {
+        getNewQuestion();
     });
     
+    let answer_status: AnswerStatus = {
+        user_selected: -1,
+        correct_answer: -1,
+        status: "none",
+    }
+    let question_info: Question = null;
+    $: question_display = questionToString(question_info?.question, $t);
+
+
     // TODO
     // question type:
     // change form from verb
@@ -47,9 +88,53 @@
     // after a while question that generated will be based on the previously wrong answer  
 </script>
 
-<div>
-    <Sentence
-        sentence={question_display}
-        pronounce={question_info?.question?.pronounce}
-    />
-</div>
+<LayoutGrid>
+    <Cell span={12}>
+        <Paper>
+            <Title>
+                <Sentence
+                    sentence={question_display}
+                    pronounce={question_info?.question?.pronounce}
+                    textColor={'white'}
+                />
+            </Title>
+        </Paper>        
+    </Cell>
+    {#if question_info}
+        {#each question_info.answer_choice as choice, i}
+            <Cell span={6}>
+                <MultipleChoiceItem 
+                    choice={choice}
+                    index={i}
+                    status={answer_status}
+                    onClick={multipleChoicePickAnswer}
+                />
+            </Cell>
+        {/each}
+    {/if}
+</LayoutGrid>
+
+<style>
+
+    .choiceButton {
+        display: inline-block;
+        border-radius: 5px;
+        margin-left: 5px;
+        padding: 10px;
+        width: 90%;
+        text-align: center;
+        cursor: pointer;
+    }
+    
+    .noneAnswer {
+        background-color: gray;
+    }
+
+    .wrongAnswer {
+        background-color: red;
+    }
+
+    .correctAnswer {
+        background-color: green;
+    }
+</style>

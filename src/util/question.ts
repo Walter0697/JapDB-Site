@@ -94,10 +94,7 @@ const MultipleChoiceVerbToForm = (item: QuizItem, verbs: VocabItem[]): Question 
         grammarType.humbleSpeech
     ]
 
-    console.log(grammar_list);
-
     let grammar_index = grammar_list.indexOf(item.quizSpecificQuestion);
-    console.log(grammar_index);
     if (grammar_index !== -1) {
         grammar_list.splice(grammar_index, 1);
     }

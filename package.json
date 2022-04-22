@@ -24,6 +24,7 @@
     "@smui/icon-button": "^6.0.0-beta.15",
     "@smui/layout-grid": "^6.0.0-beta.15",
     "@smui/linear-progress": "^6.0.0-beta.15",
+    "@smui/paper": "^6.0.0-beta.16",
     "@smui/ripple": "^6.0.0-beta.15",
     "@smui/switch": "^6.0.0-beta.15",
     "@sveltejs/adapter-auto": "next",

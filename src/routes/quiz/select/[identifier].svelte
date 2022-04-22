@@ -63,7 +63,6 @@
 
                     vocabs.push(result);
                 });
-                // todo: setting vocab list as a list of vocab
                 setVocabBank(vocabs);
                 fetching = false;
             });

@@ -1,10 +1,11 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import LayoutGrid, { Cell } from '@smui/layout-grid';
-    import Paper, { Title } from '@smui/paper';
-    import Ripple from '@smui/ripple';
+    import Paper, { Title, Subtitle } from '@smui/paper';
+    import Button, { Label } from '@smui/button';
 
-    import MultipleChoiceItem from '@lib/question/item/MultipleChoiceItem.svelte';
+    import MultipleChoice from '@lib/question/MultipleChoice.svelte';
+    import NextQuestionButton from '@lib/question/item/NextQuestionButton.svelte';
     import Sentence from '@lib/japanese/Sentence.svelte';
 
     import type { AnswerStatus } from '@type/answer';
@@ -100,41 +101,24 @@
             </Title>
         </Paper>        
     </Cell>
-    {#if question_info}
-        {#each question_info.answer_choice as choice, i}
-            <Cell span={6}>
-                <MultipleChoiceItem 
-                    choice={choice}
-                    index={i}
-                    status={answer_status}
-                    onClick={multipleChoicePickAnswer}
-                />
-            </Cell>
-        {/each}
-    {/if}
+    <Cell span={12}>
+        <MultipleChoice
+            answer_status={answer_status}
+            question_info={question_info}
+            onAnswerClick={multipleChoicePickAnswer}
+        />
+    </Cell>
+    <Cell span={12}>
+        <Paper>
+            <Subtitle>
+            
+            </Subtitle>
+        </Paper>
+    </Cell>
+    <Cell span={12}>
+        <NextQuestionButton 
+            answer_status={answer_status}
+            onNextClick={getNewQuestion}
+        />
+    </Cell>
 </LayoutGrid>
-
-<style>
-
-    .choiceButton {
-        display: inline-block;
-        border-radius: 5px;
-        margin-left: 5px;
-        padding: 10px;
-        width: 90%;
-        text-align: center;
-        cursor: pointer;
-    }
-    
-    .noneAnswer {
-        background-color: gray;
-    }
-
-    .wrongAnswer {
-        background-color: red;
-    }
-
-    .correctAnswer {
-        background-color: green;
-    }
-</style>

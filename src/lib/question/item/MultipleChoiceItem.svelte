@@ -51,8 +51,9 @@
         display: inline-block;
         border-radius: 5px;
         margin-left: 5px;
+        margin-right: 5px;
         padding: 10px;
-        width: 90%;
+        width: 100%;
         text-align: center;
         cursor: pointer;
     }

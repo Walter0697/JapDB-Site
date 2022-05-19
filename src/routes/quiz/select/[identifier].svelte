@@ -48,6 +48,7 @@
                         type: v.data.type,
                         section: v.data.section,
                         form: v.data.form,
+                        verb_form: v.data.verb_form
                     };
                     const result: VocabItem = {
                         word: v.word,

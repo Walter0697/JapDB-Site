@@ -27,6 +27,7 @@
     "@smui/paper": "^6.0.0-beta.16",
     "@smui/ripple": "^6.0.0-beta.15",
     "@smui/switch": "^6.0.0-beta.15",
+    "@smui/textfield": "^6.0.0-beta.16",
     "@sveltejs/adapter-auto": "next",
     "@sveltejs/kit": "next",
     "@types/cookie": "^0.4.1",

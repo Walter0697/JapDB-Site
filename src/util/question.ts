@@ -1,12 +1,16 @@
 import type { Question, VocabItem, QuestionSentenceInfo } from '@type/question'
 import { QuestionType } from '@type/question';
-import type { QuizItem } from '@type/quiz';
+import { QuizItem, QuizType } from '@type/quiz';
 import { grammarType } from '@util/constant';
 import { convertVerb } from '@util/grammar';
 import { getRandom, getRandomItem, getRandomListOfItem } from '@util/utils';
 import { romajiToHiragana, hiraganaToRomaji } from 'hiragana-romaji-katakana';
 
 export const getRandomQuestion = (item: QuizItem, vocabs: VocabItem[]): Question => {
+    //return getMultipleChoiceQuestion(item, vocabs);
+    if (item.quizType === QuizType.FlashCard) {
+        return getFlashCardQuestion(item, vocabs);
+    }
     return getMultipleChoiceQuestion(item, vocabs);
 }
 
@@ -14,13 +18,107 @@ export const getRandomQuestion = (item: QuizItem, vocabs: VocabItem[]): Question
 // type2: find the word with that meaning
 // type3: which is the correct grammar, but then we will need a list of verbs
 export const getMultipleChoiceQuestion = (item: QuizItem, vocabs: VocabItem[]): Question => {
-    const verb_list: VocabItem[] = vocabs.filter(s => s.data.type === "verb" && s.data.form === "dictionary");
-    return MultipleChoiceVerbToForm(item, verb_list);
-    // const questionTypeIndex: number = getRandom(2);
-    // if (questionTypeIndex === 0) {
-    //     return MultipleChoiceWordToMeaning(vocabs);
-    // }
-    // return MultipleChoiceMeaningToWord(vocabs);
+    if (item.quizSpecificQuestion === "") {
+        const questionTypeIndex: number = getRandom(2);
+        if (questionTypeIndex === 0) {
+            return MultipleChoiceWordToMeaning(vocabs);
+        }
+        return MultipleChoiceMeaningToWord(vocabs)
+    }
+    const questionTypeIndex: number = getRandom(4);
+    if (questionTypeIndex === 0) {
+        return MultipleChoiceWordToMeaning(vocabs);
+    } else if (questionTypeIndex === 1) {
+        const verb_list: VocabItem[] = vocabs.filter(s => s.data.type === "verb" && s.data.form === "dictionary");
+        return QuizConvertVerbToForm(item, verb_list);
+    } else if (questionTypeIndex === 2) {
+        const verb_list: VocabItem[] = vocabs.filter(s => s.data.type === "verb" && s.data.form === "dictionary");
+        return MultipleChoiceVerbToForm(item, verb_list);
+    }
+    return MultipleChoiceMeaningToWord(vocabs);
+}
+
+export const getFlashCardQuestion = (item: QuizItem, vocabs: VocabItem[]): Question => {
+    const questionTypeIndex: number = getRandom(2);
+    if (questionTypeIndex === 0) {
+        return FlashCardMeaningToWord(vocabs);
+    }
+    return FlashCardWordToMeaning(vocabs);
+}
+
+const FlashCardMeaningToWord = (vocabs: VocabItem[]): Question => {
+    const selectedWord: VocabItem = getRandomItem(vocabs);
+    
+    const questionInfo: QuestionSentenceInfo = {
+        question_identifier: ["quiz.meaningtoword", "{}"],
+        word: selectedWord.meaning,
+        pronounce: selectedWord.pronounce,
+    }
+
+    const output: Question = {
+        question: questionInfo,
+        question_type: QuestionType.Question,
+        answer_choice: [],
+        correct_answer: [selectedWord.word],
+        correct_index: -1,
+    }
+
+    return output;
+}
+
+const FlashCardWordToMeaning = (vocabs: VocabItem[]): Question => {
+    const selectedWord: VocabItem = getRandomItem(vocabs);
+
+    const questionInfo: QuestionSentenceInfo = {
+        question_identifier: ["quiz.wordtomeaning", "{}"],
+        word: selectedWord.word,
+        pronounce: selectedWord.pronounce,
+    }
+
+    const output: Question = {
+        question: questionInfo,
+        question_type: QuestionType.Question,
+        answer_choice: [],
+        correct_answer: [selectedWord.meaning],
+        correct_index: -1,
+    }
+
+    return output;
+}
+
+// Quiz: given verb, to form
+const QuizConvertVerbToForm = (item: QuizItem, verbs: VocabItem[]): Question => {
+    const selected_verb: VocabItem = getRandomItem(verbs);
+ 
+    let converting_word: string = selected_verb.word;
+    for (let i = 0; i < selected_verb.pronounce.list.length; i++) {
+        converting_word = converting_word.replace(selected_verb.pronounce.list[i].word, selected_verb.pronounce.list[i].hiragana);
+    }
+    converting_word = hiraganaToRomaji(converting_word);
+
+    let correct_convertion: string = convertVerb(converting_word, selected_verb.data.section, item.quizSpecificQuestion);
+    let correct_hiragana: string = romajiToHiragana(correct_convertion);
+    for (let i = 0; i < selected_verb.pronounce.list.length; i++) {
+        correct_hiragana = correct_hiragana.replace(selected_verb.pronounce.list[i].hiragana, selected_verb.pronounce.list[i].word);
+    }
+
+    const correct_answer: string[] = [correct_hiragana];
+    
+    const questionInfo: QuestionSentenceInfo = {
+        question_identifier: ["quiz.grammarhumble", "{}"],
+        word: selected_verb.word,
+        pronounce: selected_verb.pronounce,
+    }
+
+    let output: Question = {
+        question: questionInfo,
+        question_type: QuestionType.Question,
+        answer_choice: [],
+        correct_answer: correct_answer,
+        correct_index: -1,
+    }
+
+    return output;
 }
 
 // MCQ: given word, ask meaning
@@ -102,7 +200,7 @@ const MultipleChoiceVerbToForm = (item: QuizItem, verbs: VocabItem[]): Question 
     const random_grammar: string[] = getRandomListOfItem(grammar_list, 3);
     let question_choice: string[] = [];
     let converting_word: string = selected_verb.word;
-    for (let i = 0; i <selected_verb.pronounce.list.length; i++) {
+    for (let i = 0; i < selected_verb.pronounce.list.length; i++) {
         converting_word = converting_word.replace(selected_verb.pronounce.list[i].word, selected_verb.pronounce.list[i].hiragana);
     }
     converting_word = hiraganaToRomaji(converting_word);

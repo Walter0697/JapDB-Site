@@ -27,6 +27,16 @@ export const config = {
       locale: 'zh',
       key: 'sidemenu',
       loader: async () => (await import('./zh/sidemenu.json')).default,
+    },
+    {
+      locale: 'en',
+      key: 'generic',
+      loader: async () => (await import ('./en/generic.json')).default,
+    },
+    {
+      locale: 'zh',
+      key: 'generic',
+      loader: async () => (await import ('./zh/generic.json')).default,
     }
   ],
 };

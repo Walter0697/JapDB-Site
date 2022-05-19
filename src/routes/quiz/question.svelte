@@ -10,6 +10,7 @@
 
     import type { AnswerStatus } from '@type/answer';
     import type { Question, VocabItem, QuestionSentenceInfo } from '@type/question';
+    import { QuestionType } from '@type/question';
 	import { grammarType, verbType } from '@util/constant';
     import { getCurrentQuizInfo, getVocabBank } from '@util/storage';  
     import { getRandomQuestion } from '@util/question';
@@ -102,11 +103,15 @@
         </Paper>        
     </Cell>
     <Cell span={12}>
-        <MultipleChoice
-            answer_status={answer_status}
-            question_info={question_info}
-            onAnswerClick={multipleChoicePickAnswer}
-        />
+        {#if question_info.question_type === QuestionType.MultipleChoice}
+            <MultipleChoice
+                answer_status={answer_status}
+                question_info={question_info}
+                onAnswerClick={multipleChoicePickAnswer}
+            />
+        {:else}
+            <div>123</div>
+        {/if}
     </Cell>
     <Cell span={12}>
         <Paper>

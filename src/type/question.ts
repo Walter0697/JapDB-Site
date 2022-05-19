@@ -23,6 +23,7 @@ export type VocabType = {
     type: string;   // verb, noun or adjective
     section: string;    // if verb or adjective, which section
     form: string;   // if it is humble, or dictionary
+    verb_form: string;  // transitive / intransitive
 }
 
 export type BookInformation = {

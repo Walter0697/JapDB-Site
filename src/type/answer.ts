@@ -3,3 +3,7 @@ export type AnswerStatus = {
     correct_answer: number;
     status: string;         // none / correct / incorrect
 }
+
+export type AnswerReview = {
+    correct_answer: string;
+}

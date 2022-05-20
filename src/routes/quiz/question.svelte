@@ -5,16 +5,15 @@
     import Button, { Label } from '@smui/button';
 
     import MultipleChoice from '@lib/question/MultipleChoice.svelte';
+    import FlashCard from '@lib/question/FlashCard.svelte';
     import NextQuestionButton from '@lib/question/item/NextQuestionButton.svelte';
     import Sentence from '@lib/japanese/Sentence.svelte';
 
-    import type { AnswerStatus } from '@type/answer';
-    import type { Question, VocabItem, QuestionSentenceInfo } from '@type/question';
+    import type { AnswerStatus, AnswerReview } from '@type/answer';
+    import type { Question, QuestionSentenceInfo } from '@type/question';
     import { QuestionType } from '@type/question';
-	import { grammarType, verbType } from '@util/constant';
     import { getCurrentQuizInfo, getVocabBank } from '@util/storage';  
     import { getRandomQuestion } from '@util/question';
-    import { detectVerbType, convertVerb } from '@util/grammar';
     import { t } from '@lib/translations';
 
     function questionToString(info: QuestionSentenceInfo, translation: any): string {
@@ -36,6 +35,9 @@
             user_selected: -1,
             correct_answer: -1,
             status: "none",
+        }
+        answer_review = {
+            correct_answer: "",
         }
         const item = getCurrentQuizInfo();
         const bookIdentifier = item.vocabIdentifier;
@@ -60,7 +62,19 @@
                 status: "incorrect",
             }
         }
-        //getNewQuestion();
+    }
+
+    function flashCardReviewAnswer() {
+        const correct_answer: string = question_info.correct_answer[0];
+        // just a field for the next question button to show up
+        answer_status = {
+            user_selected: -1,
+            correct_answer: -1,
+            status: "correct",
+        }
+        answer_review = {
+            correct_answer: correct_answer,
+        }
     }
 
     onMount(async () => {
@@ -71,6 +85,9 @@
         user_selected: -1,
         correct_answer: -1,
         status: "none",
+    }
+    let answer_review: AnswerReview = {
+        correct_answer: "",
     }
     let question_info: Question = null;
     $: question_display = questionToString(question_info?.question, $t);
@@ -103,14 +120,20 @@
         </Paper>        
     </Cell>
     <Cell span={12}>
-        {#if question_info.question_type === QuestionType.MultipleChoice}
-            <MultipleChoice
-                answer_status={answer_status}
-                question_info={question_info}
-                onAnswerClick={multipleChoicePickAnswer}
-            />
-        {:else}
-            <div>123</div>
+        {#if question_info !== null}
+            {#if question_info.question_type === QuestionType.MultipleChoice}
+                <MultipleChoice
+                    answer_status={answer_status}
+                    question_info={question_info}
+                    onAnswerClick={multipleChoicePickAnswer}
+                />
+            {:else}
+                <FlashCard 
+                    answer_status={answer_review}
+                    question_info={question_info}
+                    onReviewClick={flashCardReviewAnswer}
+                />
+            {/if}
         {/if}
     </Cell>
     <Cell span={12}>

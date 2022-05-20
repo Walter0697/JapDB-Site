@@ -1,6 +1,7 @@
 import type { Question, VocabItem, QuestionSentenceInfo } from '@type/question'
+import type { QuizItem } from '@type/quiz';
 import { QuestionType } from '@type/question';
-import { QuizItem, QuizType } from '@type/quiz';
+import { QuizType } from '@type/quiz';
 import { grammarType } from '@util/constant';
 import { convertVerb } from '@util/grammar';
 import { getRandom, getRandomItem, getRandomListOfItem } from '@util/utils';
